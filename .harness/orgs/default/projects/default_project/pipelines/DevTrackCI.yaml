@@ -1,0 +1,53 @@
+pipeline:
+  name: DevTrack-CI
+  identifier: DevTrackCI
+  projectIdentifier: default_project
+  orgIdentifier: default
+  tags: {}
+  stages:
+    - stage:
+        name: Checkout Code
+        identifier: Checkout_Code
+        description: ""
+        type: CI
+        spec:
+          cloneCodebase: true
+          caching:
+            enabled: true
+            override: true
+          platform:
+            os: Linux
+            arch: Amd64
+          runtime:
+            type: Docker
+            spec: {}
+          execution:
+            steps:
+              - step:
+                  type: Run
+                  name: Run Command
+                  identifier: Run_Command
+                  spec:
+                    shell: Bash
+                    command: npm install
+              - step:
+                  type: Run
+                  name: Run_2Comma
+                  identifier: Run_2Comma
+                  spec:
+                    shell: Sh
+                    command: docker build -t devtrack-app .
+              - step:
+                  type: Run
+                  name: Run_3
+                  identifier: Run_3
+                  spec:
+                    shell: Sh
+                    command: docker push devtrack-app
+  properties:
+    ci:
+      codebase:
+        connectorRef: account.Github_OAuth_1745403040158
+        repoName: DevTrack
+        build: <+input>
+        sparseCheckout: []
