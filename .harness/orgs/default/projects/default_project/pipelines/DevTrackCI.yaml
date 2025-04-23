@@ -8,7 +8,7 @@ pipeline:
     - stage:
         name: Checkout Code
         identifier: Checkout_Code
-        description: ""
+        description: Checkout the source code from GitHub
         type: CI
         spec:
           cloneCodebase: true
@@ -25,29 +25,30 @@ pipeline:
             steps:
               - step:
                   type: Run
-                  name: Run Command
-                  identifier: Run_Command
+                  name: Install Dependencies
+                  identifier: Install_Dependencies
                   spec:
                     shell: Bash
                     command: npm install
               - step:
                   type: Run
-                  name: Run_2Comma
-                  identifier: Run_2Comma
+                  name: Build Docker Image
+                  identifier: Build_Docker_Image
                   spec:
-                    shell: Sh
+                    shell: Bash
                     command: docker build -t devtrack-app .
               - step:
                   type: Run
-                  name: Run_3
-                  identifier: Run_3
+                  name: Push Docker Image
+                  identifier: Push_Docker_Image
                   spec:
-                    shell: Sh
+                    shell: Bash
                     command: docker push devtrack-app
   properties:
     ci:
       codebase:
         connectorRef: account.Github_OAuth_1745403040158
-        repoName: DevTrack
+        repoName: wrohanar/DevTrack
+        branch: main
         build: <+input>
         sparseCheckout: []
